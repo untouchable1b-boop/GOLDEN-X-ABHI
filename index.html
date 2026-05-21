@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="tabTitle">Golden X Abhi — Arsenal v10</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Firebase Compat SDKs (Important) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<style>
+:root {
+  --primary: #ffcc00; --primary-rgb: 255, 204, 0;
+  --danger: #ff003c; --bg: #050608;
+  --glass: rgba(10, 15, 25, 0.98);
+  --font-gaming: 'Orbitron', sans-serif; --font-main: 'Space Grotesk', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
+body { background: var(--bg); color: #fff; font-family: var(--font-main); overflow-x: hidden; min-height: 100vh; }
+
+/* --- LOADER --- */
+#loader { position: fixed; inset: 0; z-index: 10000; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.loader-text { font-family: var(--font-gaming); font-size: 2.5rem; letter-spacing: 5px; color: var(--primary); animation: blink 1.5s infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.95); } }
+
+/* --- AUTH SCREEN --- */
+#auth-screen { position: fixed; inset: 0; z-index: 9000; background: #000; display: none; align-items: center; justify-content: center; }
+.auth-box { width: 90%; max-width: 400px; padding: 40px; background: var(--glass); border: 1px solid var(--primary); border-radius: 20px; text-align: center; }
+input { width: 100%; padding: 14px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; }
+.btn-primary { width: 100%; padding: 15px; background: var(--primary); border: none; color: #000; font-family: var(--font-gaming); font-weight: 900; cursor: pointer; border-radius: 8px; margin-top: 10px; }
+.google-btn { width: 100%; padding: 12px; background: #fff; color: #000; border: none; margin-top: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+/* --- MAIN INTERFACE --- */
+#main-site { display: none; }
+nav { height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; background: rgba(0,0,0,0.9); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
+.logo { font-family: var(--font-gaming); font-weight: 900; font-size: 1.4rem; color: #fff; }
+.logo span { color: var(--primary); }
+
+.hero { text-align: center; padding: 60px 5%; }
+.hero-title { font-family: var(--font-gaming); font-size: clamp(2rem, 8vw, 3.5rem); text-transform: uppercase; margin-bottom: 20px; }
+.hero-title b { color: var(--primary); }
+
+.folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 8%; }
+.folder-card { height: 200px; background: #111; border: 1px solid #222; border-radius: 15px; overflow: hidden; cursor: pointer; position: relative; }
+.folder-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+.folder-info { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-gaming); background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+
+#toolsGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; padding: 40px 8%; }
+.card { background: var(--glass); border: 1px solid #222; border-radius: 15px; padding: 25px; transition: 0.4s; }
+
+/* --- ADMIN PANEL --- */
+#adminPanel { position: fixed; inset: 0; background: #05070a; z-index: 9999; display: none; padding: 40px; overflow-y: auto; }
+.admin-card { background: #0d1117; border: 1px solid #222; padding: 25px; border-radius: 12px; margin-bottom: 20px; }
+.user-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #111; font-family: monospace; font-size: 0.85rem; }
+
+/* --- TOASTS --- */
+#toast-container { position: fixed; bottom: 25px; right: 25px; z-index: 10000; }
+.toast { background: var(--primary); color: #000; padding: 15px 25px; margin-top: 10px; border-radius: 5px; font-weight: bold; font-family: var(--font-gaming); }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">Golden X Abhi<br><span style="font-size: 1rem; letter-spacing: 10px;">TOOLS</span></div>
+</div>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-box" id="login-box">
+    <h2 style="color:var(--primary); margin-bottom:20px;">ACCESS LOGIN</h2>
+    <input type="email" id="loginEmail" placeholder="EMAIL ADDRESS">
+    <input type="password" id="loginPass" placeholder="PASSWORD">
+    <button class="btn-primary" onclick="login()">DECRYPT ACCESS</button>
+    <button class="google-btn" onclick="googleLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" width="18"> Sign in with Google
+    </button>
+    <p style="margin-top:20px; font-size:0.8rem; color:#555;">New User? <span onclick="toggleAuth()" style="color:var(--primary); cursor:pointer;">Signup</span></p>
+  </div>
+
+  <div class="auth-box" id="signup-box" style="display:none;">
+    <h2 style="color:var(--primary); margin-bottom:20px;">SIGNUP</h2>
+    <input type="text" id="signupUser" placeholder="USERNAME">
+    <input type="email" id="signupEmail" placeholder="EMAIL ADDRESS">
+    <input type="password" id="signupPass" placeholder="PASSWORD">
+    <button class="btn-primary" onclick="signup()">INITIALIZE IDENTITY</button>
+    <p style="margin-top:20px; font-size:0.8rem; color:#555;">Already a member? <span onclick="toggleAuth()" style="color:var(--primary); cursor:pointer;">Login</span></p>
+  </div>
+</div>
+
+<!-- MAIN SITE -->
+<div id="main-site">
+  <nav>
+    <div class="logo"><span>GOLDEN</span> X ABHI</div>
+    <div style="display:flex; gap:10px;">
+      <button onclick="openModal('adminAuth')" style="background:none; border:1px solid var(--primary); color:var(--primary); padding:8px 15px; border-radius:5px; cursor:pointer; font-size:0.6rem; font-family:var(--font-gaming);">ADMIN</button>
+      <button onclick="logout()" style="background:var(--danger); border:none; color:#fff; padding:8px 15px; border-radius:5px; cursor:pointer; font-size:0.6rem; font-family:var(--font-gaming);">LOGOUT</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div id="backBtn" onclick="location.href='index.html'" style="display:none; color:var(--primary); cursor:pointer; margin-bottom:20px; text-decoration:underline;">← HUB</div>
+    <h1 id="heroTxt" class="hero-title">TOOLS <b>ARSENAL</b></h1>
+    <div id="searchWrap" style="display:none; max-width:550px; margin:20px auto;">
+      <input type="text" id="toolSearch" placeholder="SEARCH ENCRYPTED MODULES..." oninput="filterTools()" style="text-align:center;">
+    </div>
+    <div class="folder-grid" id="folderWrap"></div>
+  </div>
+  <div id="toolsGrid"></div>
+</div>
+
+<!-- ADMIN AUTH -->
+<div id="adminAuth" style="position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9500; display:none; align-items:center; justify-content:center;">
+  <div class="auth-box">
+    <h3 style="color:var(--primary); margin-bottom:20px; font-family:var(--font-gaming);">ADMIN LOGIN</h3>
+    <input type="password" id="adminPassInput" placeholder="ACCESS KEY">
+    <button class="btn-primary" onclick="validateAdmin()">LOGIN</button>
+    <button onclick="closeModal('adminAuth')" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">CANCEL</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
+    <h2 style="font-family:var(--font-gaming); color:var(--primary);">⬢ COMMAND CENTER</h2>
+    <button onclick="closeAdmin()" style="background:var(--danger); color:#fff; border:none; padding:10px 20px; cursor:pointer;">✕ EXIT</button>
+  </div>
+  <div class="admin-grid">
+    <div class="admin-card">
+      <h3>⊕ CREATE FOLDER</h3>
+      <input type="text" id="newFolderName" placeholder="Name">
+      <input type="text" id="newFolderIcon" placeholder="Emoji (e.g. 🎱)">
+      <input type="text" id="newFolderImg" placeholder="Image URL">
+      <button class="btn-primary" onclick="addFolder()">DEPLOY</button>
+    </div>
+    <div class="admin-card">
+      <h3>⊕ DEPLOY TOOL</h3>
+      <select id="toolFolderSelect" style="width:100%; padding:12px; margin-bottom:15px; background:#000; color:#fff; border:1px solid #333;"></select>
+      <input type="text" id="toolName" placeholder="Tool Name">
+      <input type="text" id="toolKey" placeholder="Key">
+      <input type="text" id="toolLink" placeholder="Download URL">
+      <input type="text" id="toolImg" placeholder="Thumb URL">
+      <button class="btn-primary" onclick="addTool()">DEPLOY TOOL</button>
+    </div>
+    <div class="admin-card">
+      <h3>👥 REGISTERED USERS</h3>
+      <div id="userList" style="background:#000; max-height:200px; overflow-y:auto; border-radius:5px; padding:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// --- FIREBASE CONFIG ---
+const firebaseConfig = {
+  apiKey: "AIzaSyCsT3roGkRv8Ru9_4wB15NSgTDsUSnv8Xc",
+  authDomain: "golden-x-abhi.firebaseapp.com",
+  projectId: "golden-x-abhi",
+  storageBucket: "golden-x-abhi.firebasestorage.app",
+  messagingSenderId: "96727729327",
+  appId: "1:96727729327:web:78652a3557769c14fa005a",
+  databaseURL: "https://golden-x-abhi-default-rtdb.firebaseio.com" // Added this
+};
+
+// Initialize
+try {
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+  var database = firebase.database();
+} catch (e) {
+  console.log("Firebase Error: " + e.message);
+}
+
+// --- LOADER HANDLING ---
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    checkAuth();
+  }, 2000);
+};
+
+// --- AUTH SYSTEM ---
+function checkAuth() {
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('main-site').style.display = 'block';
+      initApp();
+    } else {
+      document.getElementById('auth-screen').style.display = 'flex';
+      document.getElementById('main-site').style.display = 'none';
+    }
+  });
+}
+
+function toggleAuth() {
+  const l = document.getElementById('login-box');
+  const s = document.getElementById('signup-box');
+  l.style.display = l.style.display === 'none' ? 'block' : 'none';
+  s.style.display = s.style.display === 'none' ? 'block' : 'none';
+}
+
+function signup() {
+  const user = document.getElementById('signupUser').value;
+  const email = document.getElementById('signupEmail').value;
+  const pass = document.getElementById('signupPass').value;
+  auth.createUserWithEmailAndPassword(email, pass).then(res => {
+    database.ref('users/' + res.user.uid).set({ username: user, password: pass, email: email });
+    toast("ID CREATED!");
+  }).catch(e => toast(e.message));
+}
+
+function login() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  auth.signInWithEmailAndPassword(email, pass).then(() => toast("GRANTED")).catch(e => toast(e.message));
+}
+
+function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).then(res => {
+    database.ref('users/' + res.user.uid).update({ username: res.user.displayName, password: "GOOGLE_LOGIN" });
+  }).catch(e => toast(e.message));
+}
+
+function logout() { auth.signOut(); }
+
+// --- DATA SYSTEM ---
+function initApp() {
+  const cat = new URLSearchParams(window.location.search).get('cat');
+  if(cat) loadCategory(cat); else loadFolders();
+}
+
+function loadFolders() {
+  const wrap = document.getElementById('folderWrap');
+  database.ref('folders').on('value', snap => {
+    wrap.innerHTML = '';
+    snap.forEach(c => {
+      const f = c.val();
+      const d = document.createElement('div'); d.className = 'folder-card';
+      d.onclick = () => window.open('index.html?cat=' + c.key, '_blank');
+      d.innerHTML = `<img src="${f.img || 'https://via.placeholder.com/400x200'}"><div class="folder-info"><i>${f.icon}</i><span>${f.name}</span></div>`;
+      wrap.appendChild(d);
+    });
+  });
+}
+
+function loadCategory(id) {
+  document.getElementById('folderWrap').style.display = 'none';
+  document.getElementById('searchWrap').style.display = 'block';
+  document.getElementById('backBtn').style.display = 'block';
+  database.ref('folders/' + id).once('value', s => { if(s.exists()) document.getElementById('heroTxt').innerHTML = s.val().name + " <b>SECTOR</b>"; });
+  renderTools(id);
+}
+
+function renderTools(id, q = "") {
+  const grid = document.getElementById('toolsGrid');
+  database.ref('tools/' + id).on('value', snap => {
+    grid.innerHTML = '';
+    snap.forEach(c => {
+      const t = c.val();
+      if(t.name.toLowerCase().includes(q.toLowerCase())) {
+        const d = document.createElement('div'); d.className = 'card';
+        d.innerHTML = `<img src="${t.img}" style="width:100%; border-radius:10px; margin-bottom:15px;"><h3 style="color:var(--primary)">${t.name}</h3><div style="background:#000; padding:10px; font-size:0.8rem; margin:15px 0;">KEY: ${t.key || 'FREE'}</div><button class="btn-primary" onclick="window.open('${t.link}')">DOWNLOAD</button>`;
+        grid.appendChild(d);
+      }
+    });
+  });
+}
+
+function filterTools() { const cat = new URLSearchParams(window.location.search).get('cat'); renderTools(cat, document.getElementById('toolSearch').value); }
+
+// --- ADMIN ---
+function validateAdmin() {
+  if(document.getElementById('adminPassInput').value === "12golden12abhi") {
+    closeModal('adminAuth'); document.getElementById('adminPanel').style.display = 'block';
+    loadAdminData();
+  } else toast("WRONG KEY");
+}
+
+function loadAdminData() {
+  database.ref('folders').once('value', snap => {
+    let h = ''; snap.forEach(f => h += `<option value="${f.key}">${f.val().name}</option>`);
+    document.getElementById('toolFolderSelect').innerHTML = h;
+  });
+  database.ref('users').on('value', snap => {
+    const list = document.getElementById('userList'); list.innerHTML = '';
+    snap.forEach(u => { const d = u.val(); list.innerHTML += `<div class="user-row"><span>${d.username}</span> <span>${d.password}</span></div>`; });
+  });
+}
+
+function addFolder() {
+  const n = document.getElementById('newFolderName').value;
+  database.ref('folders/' + n.toLowerCase().replace(/\s/g,'-')).set({ name: n.toUpperCase(), icon: document.getElementById('newFolderIcon').value, img: document.getElementById('newFolderImg').value });
+  toast("DEPLOYED");
+}
+
+function addTool() {
+  const f = document.getElementById('toolFolderSelect').value;
+  database.ref('tools/' + f).push({ name: document.getElementById('toolName').value, key: document.getElementById('toolKey').value, link: document.getElementById('toolLink').value, img: document.getElementById('toolImg').value });
+  toast("TOOL DEPLOYED");
+}
+
+// --- UTILS ---
+function toast(m) { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = 'toast'; t.innerText = m; c.appendChild(t); setTimeout(() => t.remove(), 3000); }
+function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+</script>
+</body>
+</html>
