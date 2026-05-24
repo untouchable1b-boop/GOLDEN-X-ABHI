@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ABHI X GOLDEN - PREMIUM ACCESS</title>
+<!-- Tailwind CSS for utility structures -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700;900&family=Fira+Code:wght@400;700&display=swap');
+
+/* --- Reset & Global Theme Customizations --- */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  width:100%; height:100%; overflow:hidden;
+  background:#ffffff; font-family:'Exo 2', sans-serif;
+  color: #1a1a2e;
+}
+
+/* --- Theme Color Variables (Controlled by Admin Panel) --- */
+:root {
+  --neon-primary: #f0c040;
+  --neon-primary-rgb: 240, 192, 64;
+  --neon-secondary: #00ffcc;
+  --neon-secondary-rgb: 0, 255, 204;
+  --bg-gradient-start: #041008;
+  --bg-gradient-end: #020704;
+  --panel-bg: rgba(4, 20, 10, 0.85);
+  --rgb-speed: 8s;
+}
+
+/* --- Original Entry Animation Styles (UNTOUCHED AND EXACT) --- */
+.scene{
+  position:relative; width:100vw; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.felt{
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 120% 120% at 50% 50%, #0f5230 0%, #0b3f24 50%, #060f08 100%);
+}
+.felt::after{
+  content:''; position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(255,255,255,0.011) 0px,transparent 2px,transparent 10px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,0.011) 0px,transparent 2px,transparent 10px);
+}
+.cushion{
+  position:absolute; inset:0;
+  border:clamp(8px,2vw,14px) solid #7a3b0e;
+  border-radius:10px;
+  box-shadow:inset 0 0 0 2px rgba(255,200,80,0.12),inset 0 0 40px rgba(0,0,0,0.5),0 0 80px rgba(0,0,0,0.8);
+  pointer-events:none; z-index:1;
+}
+.pocket{
+  position:absolute;
+  width:clamp(26px,5vw,40px); height:clamp(26px,5vw,40px);
+  border-radius:50%;
+  background:radial-gradient(circle,#000 55%,#111 100%);
+  box-shadow:0 0 0 3px #5a3010,inset 0 0 12px #000,0 0 18px rgba(0,0,0,0.9);
+  z-index:2;
+}
+.p-tl{top:8px; left:8px;} .p-tm{top:8px; left:50%; transform:translateX(-50%);}
+.p-tr{top:8px; right:8px;} .p-bl{bottom:8px; left:8px;}
+.p-bm{bottom:8px; left:50%; transform:translateX(-50%);} .p-br{bottom:8px; right:8px;}
+
+#ballCanvas{position:absolute; inset:0; z-index:3; pointer-events:none;}
+
+.card{
+  position:relative; z-index:10;
+  display:flex; flex-direction:column; align-items:center;
+  padding:clamp(20px,4vh,44px) clamp(20px,6vw,60px) clamp(16px,3vh,36px);
+  background:rgba(4,20,10,0.82);
+  border:1px solid rgba(240,192,64,0.25);
+  border-radius:8px;
+  backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 30px 80px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.06);
+  width:clamp(300px,88vw,560px);
+  animation:cardIn 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes cardIn{from{opacity:0; transform:scale(0.93) translateY(24px)}to{opacity:1; transform:scale(1) translateY(0)}}
+
+.card::before{
+  content:''; position:absolute; top:0; left:12%; right:12%; height:2px;
+  background:linear-gradient(90deg,transparent,#f0c040,#fff8d0,#f0c040,transparent);
+  animation:linePulse 3s ease-in-out infinite alternate;
+}
+@keyframes linePulse{0%{box-shadow:0 0 8px rgba(240,192,64,0.5); opacity:0.8}100%{box-shadow:0 0 26px rgba(240,192,64,1); opacity:1}}
+
+.mk{position:absolute; width:14px; height:14px;}
+.mk::before,.mk::after{content:''; position:absolute; background:#f0c040;}
+.mk-tl{top:10px; left:10px}.mk-tl::before{width:100%; height:1.5px; top:0}.mk-tl::after{width:1.5px; height:100%; left:0}
+.mk-tr{top:10px; right:10px}.mk-tr::before{width:100%; height:1.5px; top:0}.mk-tr::after{width:1.5px; height:100%; right:0; left:auto}
+.mk-bl{bottom:10px; left:10px}.mk-bl::before{width:100%; height:1.5px; bottom:0; top:auto}.mk-bl::after{width:1.5px; height:100%; left:0; top:auto; bottom:0}
+.mk-br{bottom:10px; right:10px}.mk-br::before{width:100%; height:1.5px; bottom:0; top:auto; right:0}.mk-br::after{width:1.5px; height:100%; right:0; left:auto; top:auto; bottom:0}
+
+.ball8{
+  width:clamp(40px,7vw,56px); height:clamp(40px,7vw,56px);
+  border-radius:50%;
+  background:radial-gradient(circle at 33% 33%,#555,#000);
+  box-shadow:0 6px 24px rgba(0,0,0,0.9),inset 0 1px 4px rgba(255,255,255,0.18);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:clamp(12px,2vh,20px);
+  position:relative;
+  animation:ballFloat 3.5s ease-in-out infinite;
+}
+.ball8::after{
+  content:'8'; position:absolute;
+  width:clamp(16px,3vw,22px); height:clamp(16px,3vw,22px);
+  background:#fff; border-radius:50%;
+  font-family:'Orbitron',monospace; font-size:clamp(8px,1.5vw,11px); font-weight:900; color:#000;
+  display:flex; align-items:center; justify-content:center; line-height:1;
+}
+@keyframes ballFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(200deg)}}
+
+.names-row{display:flex; flex-direction:column; align-items:center; gap:clamp(6px,1.5vh,14px); width:100%; justify-content:center;}
+.name{
+  font-family:'Orbitron',monospace; font-weight:900;
+  font-size:clamp(32px,9vw,76px);
+  letter-spacing:clamp(2px,1vw,6px);
+  line-height:1;
+}
+
+.name-abhi .letter{
+  display:inline-block;
+  color:#fff;
+  text-shadow:0 0 30px rgba(255,255,255,0.12),0 2px 4px rgba(0,0,0,0.8);
+  opacity:0;
+  animation:letterDrop 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.name-abhi .letter:nth-child(1){animation-delay:0.5s}
+.name-abhi .letter:nth-child(2){animation-delay:0.65s}
+.name-abhi .letter:nth-child(3){animation-delay:0.8s}
+.name-abhi .letter:nth-child(4){animation-delay:0.95s}
+
+.name-golden .letter{
+  display:inline-block;
+  background:linear-gradient(135deg,#f0c040 0%,#fffbe0 45%,#d4900a 75%,#f0c040 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 0 12px rgba(240,192,64,0.5));
+  opacity:0;
+  animation:letterRise 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.name-golden .letter:nth-child(1){animation-delay:1.1s}
+.name-golden .letter:nth-child(2){animation-delay:1.22s}
+.name-golden .letter:nth-child(3){animation-delay:1.34s}
+.name-golden .letter:nth-child(4){animation-delay:1.46s}
+.name-golden .letter:nth-child(5){animation-delay:1.58s}
+.name-golden .letter:nth-child(6){animation-delay:1.70s}
+
+@keyframes letterDrop{from{opacity:0; transform:translateY(-22px) scale(0.8)}to{opacity:1; transform:translateY(0) scale(1)}}
+@keyframes letterRise{from{opacity:0; transform:translateY(22px) scale(0.8)}to{opacity:1; transform:translateY(0) scale(1)}}
+
+.name-golden{position:relative; overflow:visible;}
+.name-golden::after{
+  content:'GOLDEN';
+  position:absolute; top:0; left:0;
+  font-family:'Orbitron',monospace; font-weight:900;
+  font-size:inherit; letter-spacing:inherit;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.7) 50%,transparent 60%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  background-size:200% 100%;
+  animation:shimmer 3s ease-in-out infinite;
+  animation-delay:2s;
+  pointer-events:none;
+}
+@keyframes shimmer{0%,100%{background-position:200% 0}50%{background-position:-200% 0}}
+
+.x-wrap{display:flex; flex-direction:row; align-items:center; gap:clamp(10px,3vw,24px); animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both; animation-delay:0.9s;}
+@keyframes popIn{from{opacity:0; transform:scale(0.3) rotate(-180deg)}to{opacity:1; transform:scale(1) rotate(0deg)}}
+.x-dot{width:40px; height:1.5px; background:rgba(240,192,64,0.35); border-radius:2px;}
+.x-sym{font-family:'Orbitron',monospace; font-size:clamp(18px,4vw,30px); color:#f0c040; font-weight:700; animation:xGlow 3s ease-in-out infinite;}
+@keyframes xGlow{0%,100%{filter:drop-shadow(0 0 5px rgba(240,192,64,0.4))}50%{filter:drop-shadow(0 0 18px rgba(240,192,64,1))}}
+
+.cue-line{
+  margin-top:clamp(14px,2.5vh,26px); width:100%;
+  display:flex; align-items:center; gap:10px;
+  animation:fadeUp 0.8s ease both; animation-delay:1.8s;
+}
+@keyframes fadeUp{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:translateY(0)}}
+.cue{flex:1; height:2.5px; background:linear-gradient(90deg,transparent,#8b5e3c 20%,#c49a6c 45%,#f0c040 55%,#c49a6c 70%,transparent); border-radius:2px; box-shadow:0 1px 8px rgba(240,192,64,0.2);}
+.cue-text{font-size:clamp(7px,1.5vw,10px); letter-spacing:4px; color:rgba(240,192,64,0.5); font-weight:600; text-transform:uppercase; white-space:nowrap;}
+
+.subtitle{
+  margin-top:clamp(8px,1.5vh,14px);
+  display:flex; align-items:center; gap:12px;
+  animation:fadeUp 0.8s ease both; animation-delay:2s;
+}
+.sub-icon{
+  width:clamp(14px,2.5vw,20px); height:clamp(14px,2.5vw,20px);
+  border-radius:50%;
+  box-shadow:0 2px 8px rgba(0,0,0,0.6);
+  flex-shrink:0;
+}
+.sub-icon.pool{background:radial-gradient(circle at 35% 35%,#555,#000);}
+.sub-icon.carrom{background:radial-gradient(circle at 35% 35%,#e8d5b0,#c4a060); border:2px solid rgba(255,255,255,0.3);}
+.sub-text{font-size:clamp(8px,1.8vw,11px); letter-spacing:3px; color:rgba(200,230,210,0.35); text-transform:uppercase;}
+
+.loading-wrap{
+  margin-top:clamp(14px,2.5vh,26px);
+  width:100%;
+  animation:fadeUp 0.8s ease both; animation-delay:2.2s;
+}
+.loading-label{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:6px;
+}
+.loading-title{
+  font-size:clamp(7px,1.4vw,10px); letter-spacing:4px;
+  color:rgba(240,192,64,0.6); text-transform:uppercase; font-weight:600;
+}
+.loading-pct{font-size:clamp(8px,1.5vw,11px); color:#f0c040; font-weight:700; font-family:'Orbitron',monospace;}
+
+.bar-track{
+  width:100%; height:6px;
+  background:rgba(255,255,255,0.06);
+  border-radius:4px;
+  overflow:hidden;
+  border:1px solid rgba(240,192,64,0.1);
+  position:relative;
+}
+.bar-fill{
+  height:100%; width:0%;
+  border-radius:4px;
+  background:linear-gradient(90deg,#1a6b3a,#f0c040,#fff8b0);
+  box-shadow:0 0 12px rgba(240,192,64,0.7);
+  animation:loadFill 3.5s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation-delay:2.4s;
+  position:relative;
+}
+.bar-fill::after{
+  content:''; position:absolute; right:0; top:0; bottom:0; width:20px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6));
+  animation:barShine 0.5s ease-in-out infinite alternate;
+}
+@keyframes loadFill{0%{width:0%}100%{width:100%}}
+@keyframes barShine{0%{opacity:0.4}100%{opacity:1}}
+
+.bar-dots{
+  display:flex; justify-content:space-between;
+  margin-top:5px;
+}
+.bar-dot{
+  width:4px; height:4px; border-radius:50%;
+  background:rgba(240,192,64,0.2);
+  animation:dotLight 3.5s ease forwards;
+  animation-delay:2.4s;
+}
+.bar-dot:nth-child(1){animation-delay:2.5s}
+.bar-dot:nth-child(2){animation-delay:2.8s}
+.bar-dot:nth-child(3){animation-delay:3.1s}
+.bar-dot:nth-child(4){animation-delay:3.4s}
+.bar-dot:nth-child(5){animation-delay:3.7s}
+.bar-dot:nth-child(6){animation-delay:4.0s}
+.bar-dot:nth-child(7){animation-delay:4.3s}
+.bar-dot:nth-child(8){animation-delay:4.6s}
+@keyframes dotLight{0%,49%{background:rgba(240,192,64,0.15)}50%,100%{background:#f0c040; box-shadow:0 0 6px #f0c040}}
+
+.loading-status{
+  margin-top:7px; text-align:center;
+  font-size:clamp(7px,1.3vw,9px); letter-spacing:3px;
+  color:rgba(200,230,210,0.3); text-transform:uppercase;
+  overflow:hidden; white-space:nowrap;
+}
+.status-text{
+  display:inline-block;
+  animation:statusCycle 4s steps(1) infinite;
+  animation-delay:2.4s;
+}
+@keyframes statusCycle{
+  0%{content:''}
+  0%{opacity:1}
+  25%{content:'Initializing Tools...'}
+  50%{content:'Loading Arsenal...'}
+  75%{content:'Unlocking Premium...'}
+  100%{content:'Ready to Dominate ✓'}
+}
+/* --- END OF ORIGINAL ANIMATION STYLES --- */
+
+/* --- EXTENDED CYBERPUNK GAMING STYLES --- */
+.cyber-bg {
+  background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+}
+
+/* Glassmorphism panel base */
+.cyber-glass {
+  background: #ffffff;
+  border: 1px solid rgba(var(--neon-primary-rgb), 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08),
+              0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 12px;
+}
+
+/* RGB Glow Borders */
+.rgb-glow-border {
+  position: relative;
+}
+.rgb-glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary), var(--neon-primary));
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: rgbShift var(--rgb-speed) linear infinite;
+}
+
+@keyframes rgbShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glowing text */
+.glow-text-primary {
+  color: var(--neon-primary);
+  text-shadow: 0 0 8px rgba(var(--neon-primary-rgb), 0.6);
+}
+.glow-text-secondary {
+  color: var(--neon-secondary);
+  text-shadow: 0 0 8px rgba(var(--neon-secondary-rgb), 0.6);
+}
+
+/* Tilted Futuristic Cards (3D Interactive feel) */
+.tilted-folder {
+  transform: perspective(1000px) rotateX(10deg) rotateY(-5deg);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tilted-folder:hover {
+  transform: perspective(1000px) rotateX(4deg) rotateY(2deg) translateY(-8px) scale(1.03);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Custom Interactive Scanline */
+.cyber-scanner {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--neon-secondary), transparent);
+  opacity: 0.5;
+  top: 0;
+  animation: scanTrigger 4s linear infinite;
+}
+@keyframes scanTrigger {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+/* Shake Animation for Wrong Passwords */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.animate-shake {
+  animation: shakeError 0.4s ease-in-out;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Floating particle canvas */
+#matrixCanvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.08;
+}
+
+/* Interactive Sound Visualizer simulation */
+.visualizer-bar {
+  display: inline-block;
+  width: 3px;
+  background-color: var(--neon-primary);
+  animation: jump 0.8s ease-in-out infinite alternate;
+}
+@keyframes jump {
+  0% { height: 4px; }
+  100% { height: 20px; }
+}
+
+/* Tab Active states */
+.tab-active {
+  background: rgba(var(--neon-primary-rgb), 0.15);
+  border-color: var(--neon-primary) !important;
+  color: var(--neon-primary);
+}
+
+
+/* White theme overrides */
+#folderViewScreen:not(.hidden) { display: flex !important; }
+#main-dashboard:not(.hidden) { display: flex !important; }
+
+/* Scrollbar for white theme */
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+::-webkit-scrollbar-thumb { background: #d4a017; }
+
+/* Sound toggle button for white theme */
+#soundToggleBtn { background: rgba(255,255,255,0.9) !important; border-color: rgba(0,0,0,0.15) !important; color: #444 !important; }
+
+/* Scrollbars custom styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--neon-primary);
+  border-radius: 3px;
+}
+</style>
+</head>
+<body class="cyber-bg select-none">
+
+<!-- Interactive Sound Toggle & Master FX Panel -->
+<div class="fixed top-4 left-4 z-50 flex items-center gap-3">
+  <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 rounded bg-black/50 border border-white/20 text-xs text-white/70 hover:text-white flex items-center gap-2 backdrop-blur-md transition-all">
+    <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+    <span id="soundText">AUDIO ON</span>
+  </button>
+  <div class="hidden sm:flex items-center gap-1 h-5 overflow-hidden px-2">
+    <span class="visualizer-bar" style="animation-delay:0.1s"></span>
+    <span class="visualizer-bar" style="animation-delay:0.3s"></span>
+    <span class="visualizer-bar" style="animation-delay:0.5s"></span>
+    <span class="visualizer-bar" style="animation-delay:0.2s"></span>
+  </div>
+</div>
+
+<!-- BACKGROUND CANVAS FOR FLOATING PARTICLES & MATRIX EFFECTS -->
+<canvas id="matrixCanvas"></canvas>
+<div class="cyber-overlay"></div>
+
+<!-- ==================== SCREEN 1: THEME ENTRY ANIMATION (EXACTLY AS PROVIDED) ==================== -->
+<div id="entrance-screen" class="absolute inset-0 z-40 flex items-center justify-center bg-[#060f08]">
+  <div class="scene">
+    <div class="felt"></div>
+    <div class="cushion"></div>
+    <div class="pocket p-tl"></div><div class="pocket p-tm"></div><div class="pocket p-tr"></div>
+    <div class="pocket p-bl"></div><div class="pocket p-bm"></div><div class="pocket p-br"></div>
+    <canvas id="ballCanvas"></canvas>
+
+    <div class="card">
+      <div class="mk mk-tl"></div><div class="mk mk-tr"></div>
+      <div class="mk mk-bl"></div><div class="mk mk-br"></div>
+
+      <div class="ball8"></div>
+
+      <div class="names-row">
+        <div class="name name-abhi">
+          <span class="letter">A</span><span class="letter">B</span><span class="letter">H</span><span class="letter">I</span>
+        </div>
+        <div class="x-wrap">
+          <div class="x-dot"></div>
+          <div class="x-sym">×</div>
+          <div class="x-dot"></div>
+        </div>
+        <div class="name name-golden">
+          <span class="letter">G</span><span class="letter">O</span><span class="letter">L</span><span class="letter">D</span><span class="letter">E</span><span class="letter">N</span>
+        </div>
+      </div>
+
+      <div class="cue-line">
+        <div class="cue"></div>
+        <div class="cue-text">8 Ball · Carrom Pool</div>
+        <div class="cue"></div>
+      </div>
+
+      <div class="subtitle">
+        <div class="sub-icon pool"></div>
+        <div class="sub-text">Tools &amp; Tricks</div>
+        <div class="sub-icon carrom"></div>
+        <div class="sub-text">Premium Edition</div>
+        <div class="sub-icon pool"></div>
+      </div>
+
+      <div class="loading-wrap">
+        <div class="loading-label">
+          <div class="loading-title">⚡ Loading Arsenal</div>
+          <div class="loading-pct" id="pct">0%</div>
+        </div>
+        <div class="bar-track">
+          <div class="bar-fill" id="barFill"></div>
+        </div>
+        <div class="bar-dots">
+          <div class="bar-dot"></div><div class="bar-dot"></div><div class="bar-dot"></div>
+          <div class="bar-dot"></div><div class="bar-dot"></div><div class="bar-dot"></div>
+          <div class="bar-dot"></div><div class="bar-dot"></div>
+        </div>
+        <div class="loading-status">
+          <span class="status-text" id="statusTxt">Initializing...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2: WEBSITE UNLOCK POPUP (CINEMATIC SECURE INTERFACE) ==================== -->
+<div id="unlock-screen" class="absolute inset-0 z-30 flex items-center justify-center hidden transition-all duration-1000" style="background:rgba(6,15,8,0.97);">
+  <div id="unlockCard" class="w-full max-w-md p-8 cyber-glass border rgb-glow-border relative mx-4">
+    <div class="cyber-scanner"></div>
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 mb-4 animate-pulse">
+        <i class="fa-solid fa-lock-open text-2xl"></i>
+      </div>
+      <h2 class="text-3xl font-black font-['Orbitron'] tracking-widest text-white">UNLOCK DECRYPTOR</h2>
+      <p class="text-xs text-white/50 tracking-wider mt-1 uppercase">Enter Security Clearance to access Dashboard</p>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs uppercase tracking-widest text-yellow-500/80 mb-2 font-bold font-['Orbitron']">Access Password Key</label>
+        <div class="relative">
+          <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-white/30"></i>
+          <input type="password" id="sitePasswordInput" placeholder="••••••••••••••" 
+                 class="w-full bg-black/60 border border-white/10 rounded px-10 py-3 text-sm font-mono tracking-widest focus:outline-none focus:border-yellow-500 transition-colors">
+          <button onclick="togglePasswordVisibility('sitePasswordInput')" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white">
+            <i class="fa-solid fa-eye" id="sitePasswordInput-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center text-[10px] text-white/40 mt-1">
+        <span>Required: Security Crypt Key</span>
+      </div>
+
+      <button onclick="verifyUnlock()" class="w-full py-3.5 bg-yellow-500 text-black font-extrabold tracking-widest uppercase rounded shadow-[0_0_20px_rgba(240,192,64,0.4)] hover:shadow-[0_0_35px_rgba(240,192,64,0.7)] hover:bg-yellow-400 transition-all font-['Orbitron'] flex items-center justify-center gap-2">
+        <span>AUTHORIZE GATEWAY</span>
+        <i class="fa-solid fa-shield-halved"></i>
+      </button>
+
+      <div id="unlockErrorMsg" class="text-center text-xs text-red-500 uppercase tracking-widest hidden font-semibold animate-pulse">
+        <i class="fa-solid fa-circle-exclamation mr-1"></i> Decryption Code Failed. Unauthorized Access.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 3: PREMIUM MAIN DASHBOARD ==================== -->
+<div id="main-dashboard" class="absolute inset-0 z-20 flex flex-col justify-between hidden p-4 sm:p-6 overflow-y-auto" style="background:#f0f4f8;">
+  
+  <!-- --- Dashboard Header --- -->
+  <header class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-200 pb-4 bg-white shadow-md p-4 rounded-xl z-20">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full border border-yellow-500/40 bg-yellow-500/10 flex items-center justify-center shadow-[0_0_15px_rgba(240,192,64,0.3)] animate-spin" style="animation-duration: 10s">
+        <i class="fa-solid fa-circle-nodes text-yellow-500 text-lg"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-xl sm:text-2xl font-black tracking-wider text-gray-900 font-['Orbitron'] flex items-center gap-1">
+            <span>ABHI</span><span class="text-yellow-500">X</span><span>GOLDEN</span>
+          </h1>
+          <span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full font-bold font-['Orbitron'] border border-yellow-500/30">ELITE PANEL</span>
+        </div>
+        <p class="text-[10px] uppercase text-white/50 tracking-widest flex items-center gap-1.5 mt-0.5">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>System active · Core engine v9.4 premium loaded</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+    </div>
+  </header>
+
+  <!-- --- Dashboard Central content with 3 tilted folders --- -->
+  <main class="w-full max-w-7xl mx-auto my-auto py-8 z-20">
+    <div class="text-center mb-10">
+      <h2 class="text-xs tracking-[0.4em] uppercase text-yellow-600 font-black font-['Orbitron'] mb-2">OPERATIONAL ARCHIVES</h2>
+      <p class="text-sm text-gray-500">Choose standard folder container directory to unlock specific dynamic payload tools.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-0" id="foldersContainer">
+      <!-- Generated Dynamically -->
+    </div>
+  </main>
+
+  <!-- --- Dashboard Footer --- -->
+  <footer class="w-full flex flex-col sm:flex-row items-center justify-between text-gray-400 text-[10px] border-t border-gray-200 pt-4 z-20 mt-8">
+    <p>© 2026 ABHI X GOLDEN PRESETS. ALL RIGHTS RESERVED. CODEBASE ENCRYPTION LEVEL 10.</p>
+    <div class="flex gap-4 mt-2 sm:mt-0">
+      <a href="#" class="hover:text-yellow-500">TERMS OF EXPLOIT</a>
+      <span>·</span>
+      <a href="#" class="hover:text-yellow-500">GLOBAL STRIKE SERVERS</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== POPUP: FOLDER PASSWORD PROMPT ==================== -->
+<div id="folderPassPromptPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background:rgba(0,0,0,0.6);">
+  <div class="w-full max-w-sm p-6 mx-4" style="background:#fff;border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,0.25);">
+    <div class="text-center mb-4">
+      <i class="fa-solid fa-shield-halved text-3xl mb-3 animate-pulse" style="color:#7c3aed;"></i>
+      <h3 class="text-lg font-bold font-['Orbitron']" style="color:#111;">DIRECTORY ENCRYPTED</h3>
+      <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">Provide folder unlock credentials</p>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-[10px] uppercase font-bold tracking-widest mb-1" style="color:#7c3aed;">Folder Key</label>
+        <div class="relative">
+          <input type="password" id="folderPasswordInput" placeholder="••••••••" 
+                 class="w-full rounded-xl px-4 py-3 text-sm font-mono tracking-widest text-center focus:outline-none" style="background:#f5f3ff;border:2px solid #c4b5fd;color:#5b21b6;">
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="closeFolderPassPrompt()" class="flex-1 py-2 rounded-xl text-xs tracking-wider uppercase font-bold transition-all" style="background:#f3f4f6;color:#6b7280;">
+          CANCEL
+        </button>
+        <button onclick="verifyFolderPassword()" class="flex-1 py-2 bg-purple-600 text-white rounded text-xs tracking-wider uppercase font-bold hover:bg-purple-500 shadow-[0_0_15px_rgba(147,51,234,0.4)] transition-all">
+          DECRYPT
+        </button>
+      </div>
+
+      <div id="folderPassError" class="text-center text-[10px] text-red-500 font-bold tracking-wider hidden uppercase animate-pulse">
+        INVALID DIRECTORY PASSCODE
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ==================== DYNAMIC VIEWER: CONTENTS OF ACTIVATED FOLDER ==================== -->
+<div id="folderViewScreen" class="fixed inset-0 z-40 hidden flex-col justify-between p-4 sm:p-6 overflow-y-auto" style="background:#f0f4f8;">
+  <header class="w-full flex items-center justify-between border-b border-gray-200 pb-4">
+    <div class="flex items-center gap-3">
+      <button onclick="closeFolderView()" class="px-3 py-1.5 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+        <i class="fa-solid fa-chevron-left"></i> BACK TO OVERVIEW
+      </button>
+      <div>
+        <h3 id="currentFolderTitle" class="text-xl sm:text-2xl font-black font-['Orbitron'] text-gray-900 tracking-widest flex items-center gap-2"></h3>
+        <p id="currentFolderSub" class="text-[10px] text-gray-400 tracking-wider uppercase font-mono"></p>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full max-w-5xl mx-auto my-auto py-8">
+    <div class="text-center mb-8">
+      <h4 class="text-xs uppercase text-yellow-600 font-bold tracking-widest mb-1">AVAILABLE PREMIUM TOOLS &amp; ARSENAL</h4>
+      <p class="text-xs text-gray-400 font-mono">Instant download injection system active</p>
+    </div>
+
+    <!-- Container for dynamic tool render -->
+    <div id="toolsTargetGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Generated via JS -->
+    </div>
+
+    <div id="noToolsPlaceholder" class="hidden text-center py-12 border border-white/10 rounded-lg bg-black/40">
+      <i class="fa-solid fa-box-open text-4xl text-white/20 mb-3"></i>
+      <p class="text-sm text-white/50">No tools uploaded to this folder yet.</p>
+    </div>
+  </main>
+
+  <footer class="w-full text-center text-[10px] text-gray-400 border-t border-gray-200 pt-4">
+    SECURE TOOL COMPILATION NODE BY ABHI &amp; GOLDEN PRESETS
+  </footer>
+</div>
+
+<!-- ==================== DISPLAY ACCESS POPUP: COPIER / DOWNLOAD SYSTEM ==================== -->
+<div id="toolDetailsPopup" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background:rgba(0,0,0,0.6);">
+  <div class="w-full max-w-md p-6 mx-4 relative" style="background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,0.25);">
+    <div class="text-center mb-4">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full mb-2" style="background:#fef9c3;border:2px solid #fde047;color:#ca8a04;">
+        <i class="fa-solid fa-file-shield text-xl animate-pulse"></i>
+      </div>
+      <h3 id="popupToolName" class="text-lg font-bold font-['Orbitron'] text-gray-900 tracking-widest"></h3>
+      <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-1 font-mono">Tap to copy key · Click button to download</p>
+    </div>
+
+    <!-- Dynamic Copy Interface generated via JS -->
+    <div class="space-y-4" id="popupAuthFormSection"></div>
+
+    <div class="mt-6 flex flex-col gap-2">
+      <!-- Standardized direct one-click download key placement -->
+      <button id="verifyDownloadBtn" class="w-full py-3 bg-yellow-500 text-black font-extrabold text-sm rounded uppercase tracking-widest hover:bg-yellow-400 shadow-[0_0_15px_rgba(240,192,64,0.3)] transition-all flex items-center justify-center gap-2">
+        <i class="fa-solid fa-cloud-arrow-down"></i>
+        <span>DOWNLOAD PAYLOAD</span>
+      </button>
+      <button onclick="closeToolDetailsPopup()" class="w-full py-2 rounded-xl text-xs uppercase tracking-wider font-bold transition-all" style="background:#f3f4f6;color:#6b7280;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+        CLOSE WINDOW
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ==================== SCRIPTS AND ENGINE CORE ==================== -->
+<script>
+// --- AUDIO MASTER SYNTHESIZER UTILITY (Procedural feedback sounds) ---
+let audioCtx = null;
+let isAudioMuted = false;
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function playBeep(freq, type, duration, vol) {
+  if (isAudioMuted) return;
+  initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  try {
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    
+    gainNode.gain.setValueAtTime(vol || 0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch (e) {
+    // Web audio blocks until physical user interaction
+  }
+}
+
+// Interactive Audio presets
+function soundHover() { playBeep(880, 'sine', 0.08, 0.05); }
+function soundClick() { playBeep(1200, 'triangle', 0.12, 0.08); }
+function soundSuccess() {
+  playBeep(440, 'triangle', 0.1, 0.08);
+  setTimeout(() => playBeep(880, 'triangle', 0.1, 0.08), 100);
+  setTimeout(() => playBeep(1760, 'sine', 0.2, 0.08), 200);
+}
+function soundError() {
+  playBeep(220, 'sawtooth', 0.15, 0.1);
+  setTimeout(() => playBeep(180, 'sawtooth', 0.2, 0.1), 100);
+}
+function soundPortal() {
+  playBeep(330, 'triangle', 0.1, 0.05);
+  setTimeout(() => playBeep(440, 'triangle', 0.1, 0.05), 80);
+  setTimeout(() => playBeep(554, 'triangle', 0.1, 0.05), 160);
+  setTimeout(() => playBeep(659, 'sine', 0.3, 0.05), 240);
+}
+
+function toggleAudio() {
+  isAudioMuted = !isAudioMuted;
+  const icon = document.getElementById('soundIcon');
+  const txt = document.getElementById('soundText');
+  if (isAudioMuted) {
+    icon.className = "fa-solid fa-volume-xmark";
+    txt.textContent = "AUDIO OFF";
+  } else {
+    icon.className = "fa-solid fa-volume-high";
+    txt.textContent = "AUDIO ON";
+    initAudio();
+  }
+}
+
+document.addEventListener('mouseover', (e) => {
+  if (e.target.tagName === 'BUTTON' || e.target.classList.contains('cursor-pointer')) {
+    soundHover();
+  }
+});
+
+// --- CANVAS BALLS (ORIGINAL PHYSICS & ANIMATION SETUPS - PRESERVED PERFECTLY) ---
+const canvas = document.getElementById('ballCanvas');
+const ctx = canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize(); window.addEventListener('resize',resize);
+
+const POOL_COLORS=['#e8c830','#e87530','#c82020','#6020c0','#1840c0','#1a9040','#a02020','#111111','#e8c830','#e87530'];
+const STRIPES=[false,false,false,false,false,false,false,false,true,true];
+
+const CARROM=[
+  {type:'c',color:'#f5e8c0',border:'#c4a060'},
+  {type:'c',color:'#f5e8c0',border:'#c4a060'},
+  {type:'c',color:'#222',border:'#555'},
+  {type:'c',color:'#222',border:'#555'},
+  {type:'c',color:'#e83030',border:'#a01010'},
+];
+
+const allBalls=[
+  ...POOL_COLORS.map((color,i)=>({
+    x:80+Math.random()*(window.innerWidth-160),
+    y:80+Math.random()*(window.innerHeight-160),
+    vx:(Math.random()-0.5)*1.5,vy:(Math.random()-0.5)*1.5,
+    r:clampR(18,20),color,stripe:STRIPES[i],num:i+1,
+    angle:Math.random()*Math.PI*2,spin:(Math.random()-0.5)*0.03,
+    type:'pool'
+  })),
+  ...CARROM.map((c,i)=>({
+    x:80+Math.random()*(window.innerWidth-160),
+    y:80+Math.random()*(window.innerHeight-160),
+    vx:(Math.random()-0.5)*1.2,vy:(Math.random()-0.5)*1.2,
+    r:clampR(15,17),color:c.color,border:c.border,
+    angle:Math.random()*Math.PI*2,spin:(Math.random()-0.5)*0.025,
+    type:'carrom',isQueen:i===4
+  }))
+];
+
+function clampR(a,b){return a+Math.random()*(b-a);}
+function lighten(hex,a){let n=parseInt(hex.replace('#',''),16)||0;return`rgb(${Math.min(255,(n>>16)+a)},${Math.min(255,((n>>8)&255)+a)},${Math.min(255,(n&255)+a)})`}
+function darken(hex,a){let n=parseInt(hex.replace('#',''),16)||0;return`rgb(${Math.max(0,(n>>16)-a)},${Math.max(0,((n>>8)&255)-a)},${Math.max(0,(n&255)-a)})`}
+
+function drawPool(b){
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.angle);
+  ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=14;ctx.shadowOffsetY=5;
+  const g=ctx.createRadialGradient(-b.r*.3,-b.r*.35,b.r*.05,0,0,b.r);
+  g.addColorStop(0,lighten(b.color,60));g.addColorStop(0.5,b.color);g.addColorStop(1,darken(b.color,45));
+  ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  if(b.stripe){
+    ctx.save();ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);ctx.clip();
+    ctx.fillStyle='#f0f0f0';ctx.fillRect(-b.r,-b.r*.42,b.r*2,b.r*.84);ctx.restore();
+  }
+  ctx.shadowColor='transparent';
+  ctx.beginPath();ctx.arc(0,0,b.r*.37,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#111';ctx.font=`bold ${b.r*.35}px Orbitron,monospace`;
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.num,0,0);
+  const sh=ctx.createRadialGradient(-b.r*.35,-b.r*.4,0,-b.r*.2,-b.r*.3,b.r*.65);
+  sh.addColorStop(0,'rgba(255,255,255,0.38)');sh.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fillStyle=sh;ctx.fill();
+  ctx.restore();
+}
+
+function drawCarrom(b){
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.angle);
+  ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=10;ctx.shadowOffsetY=4;
+  const g=ctx.createRadialGradient(-b.r*.25,-b.r*.3,b.r*.05,0,0,b.r);
+  g.addColorStop(0,lighten(b.color,40));g.addColorStop(0.6,b.color);g.addColorStop(1,darken(b.color,30));
+  ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);
+  ctx.strokeStyle=b.border;ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,b.r*.55,0,Math.PI*2);
+  ctx.strokeStyle=b.isQueen?'rgba(255,200,0,0.6)':'rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.stroke();
+  ctx.beginPath();ctx.arc(0,0,b.r*.15,0,Math.PI*2);
+  ctx.fillStyle=b.isQueen?'#ffd700':'rgba(255,255,255,0.25)';ctx.fill();
+  const sh=ctx.createRadialGradient(-b.r*.3,-b.r*.35,0,-b.r*.15,-b.r*.25,b.r*.6);
+  sh.addColorStop(0,'rgba(255,255,255,0.3)');sh.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.beginPath();ctx.arc(0,0,b.r,0,Math.PI*2);ctx.fillStyle=sh;ctx.fill();
+  ctx.restore();
+}
+
+let animFrameId = null;
+function tick(){
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  const margin=50;
+
+  allBalls.forEach(b=>{
+    b.x+=b.vx;b.y+=b.vy;b.angle+=b.spin;
+    if(b.x-b.r<margin){b.vx=Math.abs(b.vx);b.x=margin+b.r;}
+    if(b.x+b.r>W-margin){b.vx=-Math.abs(b.vx);b.x=W-margin-b.r;}
+    if(b.y-b.r<margin){b.vy=Math.abs(b.vy);b.y=margin+b.r;}
+    if(b.y+b.r>H-margin){b.vy=-Math.abs(b.vy);b.y=H-margin-b.r;}
+    const spd=Math.hypot(b.vx,b.vy);
+    if(spd<0.45){const f=0.5/spd;b.vx*=f;b.vy*=f;}
+    if(spd>2.2){const f=2.2/spd;b.vx*=f;b.vy*=f;}
+  });
+
+  for(let i=0;i<allBalls.length;i++){
+    for(let j=i+1;j<allBalls.length;j++){
+      const a=allBalls[i],b=allBalls[j];
+      const dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy),min=a.r+b.r;
+      if(dist<min&&dist>0){
+        const nx=dx/dist,ny=dy/dist,ov=(min-dist)/2;
+        a.x-=nx*ov;a.y-=ny*ov;b.x+=nx*ov;b.y+=ny*ov;
+        const rv=(a.vx-b.vx)*nx+(a.vy-b.vy)*ny;
+        if(rv>0){a.vx-=rv*nx;a.vy-=rv*ny;b.vx+=rv*nx;b.vy+=rv*ny;}
+      }
+    }
+  }
+
+  allBalls.forEach(b=>{
+    ctx.beginPath();ctx.ellipse(b.x,b.y+b.r*.75,b.r*.65,b.r*.18,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fill();
+  });
+  allBalls.forEach(b=>b.type==='pool'?drawPool(b):drawCarrom(b));
+  animFrameId = requestAnimationFrame(tick);
+}
+tick();
+
+// --- ORIGINAL ENTRANCE TRIGGER HANDLERS ---
+const pctEl=document.getElementById('pct');
+const statusEl=document.getElementById('statusTxt');
+const statuses=['Initializing Tools...','Loading Arsenal...','Unlocking Premium...','Ready to Dominate ✓'];
+let pct=0;
+const startDelay=2400;
+
+setTimeout(()=>{
+  const iv=setInterval(()=>{
+    pct=Math.min(100,pct+(Math.random()*2.2+0.5));
+    pctEl.textContent=Math.floor(pct)+'%';
+    if(pct<30)statusEl.textContent=statuses[0];
+    else if(pct<60)statusEl.textContent=statuses[1];
+    else if(pct<90)statusEl.textContent=statuses[2];
+    else statusEl.textContent=statuses[3];
+    if(pct>=100){
+      pct=100;
+      pctEl.textContent='100%';
+      clearInterval(iv);
+      triggerTransitionToUnlock();
+    }
+  },35);
+},startDelay);
+
+
+// --- SYSTEM DATA ENGINE & STATE MANAGEMENT ---
+const factoryDefaults = {
+  mainUnlockPassword: "GOLDENXXXABHI4141#",
+  adminPassword: "50golden50abhi@",
+  folderPasswords: {
+    "vpns": "2121"
+  },
+  theme: 'cyberpunk',
+  rgbSpeed: '8s',
+  particleEffect: 'matrix',
+  folders: [
+    { id: 'carrom', name: 'Carrom Pool', desc: 'Exploit accurate target prediction nodes, smooth linear physics calculations and cue strikeline helpers.', password: "" },
+    { id: 'pool', name: '8 Ball Pool', desc: 'Precision auto-aim extensions, custom path-projection systems, spin modifier arrays, and premium cue options.', password: "" },
+    { id: 'vpns', name: 'VPNs', desc: 'Encrypted proxy routing setups, secure premium tunnel systems, low-ping game optimization servers, and bypass algorithms.', password: "2121" }
+  ],
+  tools: [
+    {
+      id: 'tool_1', folderId: 'pool', name: 'Jarvis Direct Kill',
+      authType: 'key', authKey: 'CRYSTAL KEY',
+      note: 'HOPE EXPIRED',
+      downloadUrl: 'https://www.mediafire.com/file/mh0bvaa9pl8yt72/base.apk/file',
+      downloadUrl2: null, downloadUrl2Label: null
+    },
+    {
+      id: 'tool_2', folderId: 'pool', name: 'Sollar Engine',
+      authType: 'key', authKey: 'Sollar-TRIAL-3D',
+      note: '',
+      downloadUrl: 'https://www.mediafire.com/file/5ha4mhz3ujjex3c/SOLLAR_ENGINE%2528V2%2529.apk/file',
+      downloadUrl2: 'https://www.mediafire.com/file/pw2gnn0m9des9it/8_Ball_Pool_56.22.0_APKPure.apk/file',
+      downloadUrl2Label: 'Supported Version'
+    },
+    {
+      id: 'tool_3', folderId: 'carrom', name: 'Aim Carrom Free',
+      authType: 'none', authKey: '',
+      note: '',
+      downloadUrl: 'https://www.mediafire.com/file/1v8jldv24kyd008/aimcarrom-free-2.8.4.apk/file',
+      downloadUrl2: null, downloadUrl2Label: null
+    },
+    {
+      id: 'tool_4', folderId: 'carrom', name: 'BitAim v101',
+      authType: 'none', authKey: '',
+      note: '',
+      downloadUrl: 'https://www.mediafire.com/file/snw4igs5cxma5iv/bitaim_v101_%25281%2529.apk/file',
+      downloadUrl2: null, downloadUrl2Label: null
+    },
+    {
+      id: 'tool_5', folderId: 'carrom', name: 'Lulubox Super',
+      authType: 'none', authKey: '',
+      note: '',
+      downloadUrl: 'https://www.mediafire.com/file/hwdz7mh3tvsh7nd/luluboxsuper-2.1.1-%2528support-GameGuardian%2529.apk/file',
+      downloadUrl2: null, downloadUrl2Label: null
+    },
+    {
+      id: 'tool_6', folderId: 'carrom', name: 'Game Guardian',
+      authType: 'none', authKey: '',
+      note: 'This is the version for non rooted phones',
+      downloadUrl: 'https://www.mediafire.com/file/gj5bvuo9w87v7xu/Ugid+Ix.apk/file',
+      downloadUrl2: null, downloadUrl2Label: null
+    }
+  ]
+};
+
+// Always start fresh - clear old localStorage so tools & password are correct
+localStorage.removeItem('ABHI_GOLDEN_SYSTEM_DATA');
+let systemState = JSON.parse(JSON.stringify(factoryDefaults));
+
+function persistState() {
+  localStorage.setItem('ABHI_GOLDEN_SYSTEM_DATA', JSON.stringify(systemState));
+  renderAllDynamicContent();
+}
+
+// --- DYNAMIC CONTENT RENDERING ENGINE ---
+function renderAllDynamicContent() {
+  // Tool count is rendered inline in folder cards
+
+  // Admin panel removed - no admin list rendering needed
+
+  const gridContainer = document.getElementById('foldersContainer');
+  gridContainer.innerHTML = '';
+  systemState.folders.forEach((f, idx) => {
+    const toolCount = systemState.tools.filter(t => t.folderId === f.id).length;
+    let folderAccentColorClass = 'border-l-cyan-500';
+    let folderIcon = 'fa-solid fa-chess-board';
+    // 8 ball = green, carrom = cyan, vpn = yellow
+    let folderThemeColor = 'text-cyan-500';
+    let folderBgLabel = 'bg-cyan-500/15';
+    let borderAccent = 'border-cyan-500/30';
+    folderAccentColorClass = 'border-l-cyan-500';
+    folderIcon = 'fa-solid fa-chess-board';
+
+    if (f.id === 'pool') {
+      folderAccentColorClass = 'border-l-green-600';
+      folderIcon = 'fa-solid fa-circle';
+      folderThemeColor = 'text-green-600';
+      folderBgLabel = 'bg-green-500/15';
+      borderAccent = 'border-green-500/30';
+    } else if (f.id === 'vpns') {
+      folderAccentColorClass = 'border-l-yellow-500';
+      folderIcon = 'fa-solid fa-vault';
+      folderThemeColor = 'text-yellow-600';
+      folderBgLabel = 'bg-yellow-500/15';
+      borderAccent = 'border-yellow-500/30';
+    } else if (f.id === 'carrom') {
+      folderAccentColorClass = 'border-l-cyan-500';
+      folderIcon = 'fa-solid fa-chess-board';
+      folderThemeColor = 'text-cyan-500';
+      folderBgLabel = 'bg-cyan-500/15';
+      borderAccent = 'border-cyan-500/30';
+    }
+
+    gridContainer.innerHTML += `
+      <div onclick="openFolder('${f.id}')" class="tilted-folder p-6 ${folderAccentColorClass} flex flex-col justify-between h-72 relative overflow-hidden cursor-pointer" style="background:#fff; border-radius:16px; border-left:5px solid; box-shadow:0 8px 30px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06); transition:all 0.3s cubic-bezier(0.16,1,0.3,1);">
+        <div class="cyber-scanner" style="animation-delay: ${idx * 0.5}s"></div>
+        <div class="flex justify-between items-start">
+          <div class="p-3 ${folderBgLabel} rounded-lg border ${borderAccent} ${folderThemeColor}">
+            <i class="${folderIcon} text-3xl"></i>
+          </div>
+          <span class="text-[9px] font-mono tracking-widest ${folderThemeColor} font-bold ${folderBgLabel} px-2 py-1 rounded border ${borderAccent}">${f.id.toUpperCase()}_DIR</span>
+        </div>
+        <div>
+          <h3 class="text-2xl font-extrabold tracking-wide text-gray-900 font-['Orbitron'] mb-1">${f.name.toUpperCase()}</h3>
+          <p class="text-xs text-gray-500 leading-relaxed mb-4">${f.desc}</p>
+          <div class="flex justify-between items-center text-[10px] uppercase font-mono tracking-wider ${folderThemeColor}">
+            <span class="flex items-center gap-1">
+              <span class="inline-block w-2 h-2 rounded-full ${f.id === 'pool' ? 'bg-green-500' : f.id==='carrom' ? 'bg-cyan-500' : 'bg-yellow-500'}"></span>
+              <span>${toolCount} Active ${toolCount === 1 ? 'Tool' : 'Tools'}</span>
+            </span>
+            ${f.password ? `
+              <span class="flex items-center gap-1 text-red-400">
+                <i class="fa-solid fa-lock text-xs"></i> LOCKED
+              </span>
+            ` : `
+              <span class="font-bold">ENTER DIRECTORY <i class="fa-solid fa-chevron-right ml-1"></i></span>
+            `}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+// --- SCREEN TRANSITIONS ENGINE ---
+function triggerTransitionToUnlock() {
+  soundSuccess();
+  const entrance = document.getElementById('entrance-screen');
+  const unlock = document.getElementById('unlock-screen');
+  
+  entrance.style.opacity = '0';
+  entrance.style.transform = 'scale(1.1)';
+  
+  setTimeout(() => {
+    entrance.style.display = 'none';
+    cancelAnimationFrame(animFrameId);
+    unlock.classList.remove('hidden');
+    document.getElementById('sitePasswordInput').focus();
+  }, 1000);
+}
+
+function verifyUnlock() {
+  const passwordEntered = document.getElementById('sitePasswordInput').value;
+  const unlockCard = document.getElementById('unlockCard');
+  const errorMsg = document.getElementById('unlockErrorMsg');
+
+  if (passwordEntered === systemState.mainUnlockPassword) {
+    soundSuccess();
+    unlockCard.style.transform = 'scale(0.9) translateY(-30px)';
+    unlockCard.style.opacity = '0';
+    document.getElementById('unlock-screen').style.opacity = '0';
+    
+    setTimeout(() => {
+      document.getElementById('unlock-screen').classList.add('hidden');
+      document.getElementById('main-dashboard').classList.remove('hidden');
+      initParticleEngine(systemState.particleEffect);
+    }, 800);
+  } else {
+    soundError();
+    unlockCard.classList.add('animate-shake');
+    errorMsg.classList.remove('hidden');
+    setTimeout(() => {
+      unlockCard.classList.remove('animate-shake');
+    }, 500);
+  }
+}
+
+function togglePasswordVisibility(inputId) {
+  soundClick();
+  const inp = document.getElementById(inputId);
+  const icon = document.getElementById(`${inputId}-eye`);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'fa-solid fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'fa-solid fa-eye';
+  }
+}
+
+// --- FOLDER VIEWER LOGIC ---
+let activeTargetFolderId = "";
+
+function openFolder(folderId) {
+  soundClick();
+  const folder = systemState.folders.find(f => f.id === folderId);
+  if (!folder) return;
+
+  activeTargetFolderId = folderId;
+
+  if (folder.password) {
+    document.getElementById('folderPassPromptPopup').classList.remove('hidden');
+    document.getElementById('folderPasswordInput').value = '';
+    document.getElementById('folderPasswordInput').focus();
+    document.getElementById('folderPassError').classList.add('hidden');
+  } else {
+    executeLoadFolderContents(folder);
+  }
+}
+
+function verifyFolderPassword() {
+  const entered = document.getElementById('folderPasswordInput').value;
+  const folder = systemState.folders.find(f => f.id === activeTargetFolderId);
+
+  if (entered === folder.password) {
+    soundSuccess();
+    document.getElementById('folderPassPromptPopup').classList.add('hidden');
+    executeLoadFolderContents(folder);
+  } else {
+    soundError();
+    document.getElementById('folderPassError').classList.remove('hidden');
+  }
+}
+
+function closeFolderPassPrompt() {
+  soundClick();
+  document.getElementById('folderPassPromptPopup').classList.add('hidden');
+}
+
+function executeLoadFolderContents(folder) {
+  soundPortal();
+  document.getElementById('currentFolderTitle').textContent = folder.name.toUpperCase();
+  document.getElementById('currentFolderSub').textContent = `DIRECTORY ACTIVE NODE: [${folder.id.toUpperCase()}]`;
+
+  const toolsList = systemState.tools.filter(t => t.folderId === folder.id);
+  const targetGrid = document.getElementById('toolsTargetGrid');
+  const noTools = document.getElementById('noToolsPlaceholder');
+
+  targetGrid.innerHTML = '';
+  
+  if (toolsList.length === 0) {
+    noTools.classList.remove('hidden');
+  } else {
+    noTools.classList.add('hidden');
+    toolsList.forEach(tool => {
+      let authBadge = `<span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px]">DIRECT DOWNLOAD</span>`;
+      let buttonText = `DOWNLOAD NOW`;
+      
+      if (tool.authType === 'key') {
+        authBadge = `<span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[9px]"><i class="fa-solid fa-key mr-1"></i> REQUIRES KEY</span>`;
+        buttonText = `VIEW KEY &amp; DOWNLOAD`;
+      } else if (tool.authType === 'user-pass') {
+        authBadge = `<span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px]"><i class="fa-solid fa-user-lock mr-1"></i> REQUIRES LOGIN</span>`;
+        buttonText = `VIEW LOGIN &amp; DOWNLOAD`;
+      }
+
+      const fId = folder.id;
+      const accentColor = fId === 'pool' ? '#16a34a' : fId === 'carrom' ? '#0891b2' : '#d97706';
+      const cardBg = fId === 'pool' ? '#f0fdf4' : fId === 'carrom' ? '#ecfeff' : '#fffbeb';
+      const cardBorder = fId === 'pool' ? '#86efac' : fId === 'carrom' ? '#67e8f9' : '#fde68a';
+      const badgeLabel = tool.authType === 'key' ? '🔑 Key Required' : '⚡ Free Download';
+
+      targetGrid.innerHTML += `
+        <div onclick="triggerToolExecute('${tool.id}')"
+             style="background:${cardBg}; border:2px solid ${cardBorder}; border-radius:18px; cursor:pointer; padding:18px 20px; display:flex; align-items:center; gap:16px; transition:all 0.25s; user-select:none;"
+             onmouseover="this.style.transform='translateY(-5px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.12)';this.style.borderColor='${accentColor}'"
+             onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='${cardBorder}'">
+          <div style="width:54px;height:54px;background:${accentColor};border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+            <i class="fa-solid fa-file-arrow-down" style="color:#fff;font-size:22px;"></i>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:15px;color:#111;letter-spacing:0.04em;margin-bottom:5px;">${tool.name}</div>
+            <div style="font-size:10px;font-weight:700;color:${accentColor};text-transform:uppercase;letter-spacing:0.12em;">${badgeLabel}</div>
+          </div>
+          <i class="fa-solid fa-chevron-right" style="color:${accentColor};opacity:0.6;font-size:14px;"></i>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById('folderViewScreen').classList.remove('hidden');
+}
+
+function closeFolderView() {
+  soundClick();
+  document.getElementById('folderViewScreen').classList.add('hidden');
+}
+
+
+// --- ACTIVE SELECTED TOOL EXECUTION / SECURITY GATEWAY ---
+let selectedToolToVerify = null;
+
+function triggerToolExecute(toolId) {
+  soundClick();
+  const tool = systemState.tools.find(t => t.id === toolId);
+  if (!tool) return;
+  selectedToolToVerify = tool;
+
+  document.getElementById('popupToolName').textContent = tool.name.toUpperCase();
+  const targetSection = document.getElementById('popupAuthFormSection');
+  targetSection.innerHTML = '';
+
+  // NOTE badge (e.g. "HOPE EXPIRED")
+  let noteHTML = '';
+  if (tool.note) {
+    noteHTML = `<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-red-600 text-[11px] font-bold uppercase tracking-widest">
+      <i class="fa-solid fa-triangle-exclamation"></i> ${tool.note}
+    </div>`;
+  }
+
+  // KEY section
+  let keyHTML = '';
+  if (tool.authType === 'key' && tool.authKey) {
+    keyHTML = `<div>
+      <label class="block text-[10px] uppercase text-yellow-600 font-black tracking-widest mb-2">
+        <i class="fa-solid fa-key mr-1"></i> Activation Key
+      </label>
+      <div class="flex gap-2">
+        <input type="text" readonly id="copyKeyField" value="${tool.authKey}"
+               onclick="copyToClipboard('copyKeyField','copyKeyBtn')"
+               class="flex-1 bg-yellow-50 border-2 border-yellow-400 text-yellow-800 rounded-lg px-3 py-2.5 text-sm font-mono font-bold tracking-widest focus:outline-none cursor-pointer text-center">
+        <button onclick="copyToClipboard('copyKeyField','copyKeyBtn')" id="copyKeyBtn"
+                class="px-4 bg-yellow-500 hover:bg-yellow-400 text-black font-black text-xs rounded-lg uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md">
+          <i class="fa-solid fa-copy"></i> Copy
+        </button>
+      </div>
+    </div>`;
+  }
+
+  // DOWNLOAD BUTTONS section
+  let dlHTML = `<div class="flex flex-col gap-2 pt-1">
+    <a href="${tool.downloadUrl}" target="_blank" onclick="soundSuccess()"
+       class="w-full py-3 bg-green-500 hover:bg-green-400 text-white font-extrabold text-sm rounded-xl uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-200 no-underline">
+      <i class="fa-solid fa-cloud-arrow-down text-lg"></i> Download Now
+    </a>`;
+
+  if (tool.downloadUrl2) {
+    dlHTML += `<a href="${tool.downloadUrl2}" target="_blank" onclick="soundSuccess()"
+       class="w-full py-3 bg-blue-500 hover:bg-blue-400 text-white font-extrabold text-sm rounded-xl uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-200 no-underline">
+      <i class="fa-solid fa-cloud-arrow-down text-lg"></i> ${tool.downloadUrl2Label || 'Download v2'}
+    </a>`;
+  }
+  dlHTML += `</div>`;
+
+  targetSection.innerHTML = noteHTML + keyHTML + dlHTML;
+
+  // Hide old single download button (we replaced with inline <a> links)
+  document.getElementById('verifyDownloadBtn').style.display = 'none';
+
+  document.getElementById('toolDetailsPopup').classList.remove('hidden');
+}
+
+// Tap to Copy Utility Helper
+function copyToClipboard(fieldId, btnId) {
+  soundSuccess();
+  const inputEl = document.getElementById(fieldId);
+  const btnEl = document.getElementById(btnId);
+  
+  inputEl.select();
+  inputEl.setSelectionRange(0, 99999); // mobile compatibility
+  
+  navigator.clipboard.writeText(inputEl.value).then(() => {
+    const originalHTML = btnEl.innerHTML;
+    btnEl.innerHTML = `<i class="fa-solid fa-check"></i> Copied!`;
+    btnEl.classList.remove('bg-yellow-500', 'bg-purple-500');
+    btnEl.classList.add('bg-emerald-500', 'text-white');
+    
+    setTimeout(() => {
+      btnEl.innerHTML = originalHTML;
+      btnEl.classList.remove('bg-emerald-500');
+      if (fieldId === 'copyKeyField') {
+        btnEl.classList.add('bg-yellow-500', 'text-black');
+      } else {
+        btnEl.classList.add('bg-purple-500', 'text-white');
+      }
+    }, 1200);
+  });
+}
+
+function closeToolDetailsPopup() {
+  soundClick();
+  document.getElementById('toolDetailsPopup').classList.add('hidden');
+}
+
+
+// --- ADMIN GATEWAY PANEL FLOWS ---
+function triggerAdminPanelPrompt() {
+  soundClick();
+  document.getElementById('adminPassPromptPopup').classList.remove('hidden');
+  document.getElementById('adminPasswordInput').value = '';
+  document.getElementById('adminPasswordInput').focus();
+  document.getElementById('adminPassError').classList.add('hidden');
+}
+
+function verifyAdminUnlock() {
+  const entered = document.getElementById('adminPasswordInput').value;
+  const adminCard = document.getElementById('adminPromptCard');
+  const errorMsg = document.getElementById('adminPassError');
+
+  if (entered === systemState.adminPassword) {
+    soundSuccess();
+    document.getElementById('adminPassPromptPopup').classList.add('hidden');
+    openAdminDashboard();
+  } else {
+    soundError();
+    adminCard.classList.add('animate-shake');
+    errorMsg.classList.remove('hidden');
+    setTimeout(() => {
+      adminCard.classList.remove('animate-shake');
+    }, 500);
+  }
+}
+
+function closeAdminPrompt() {
+  soundClick();
+  document.getElementById('adminPassPromptPopup').classList.add('hidden');
+}
+
+function openAdminDashboard() {
+  document.getElementById('adminPanelDashboard').classList.remove('hidden');
+}
+
+function closeAdminDashboard() {
+  soundClick();
+  document.getElementById('adminPanelDashboard').classList.add('hidden');
+}
+
+
+// --- ADMIN OPERATIONAL COMMANDS ---
+
+// 1. UI Settings Theme Loader
+function setThemePreset(themeName) {
+  soundClick();
+  systemState.theme = themeName;
+  
+  if (themeName === 'cyberpunk') {
+    document.documentElement.style.setProperty('--neon-primary', '#f0c040');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '240, 192, 64');
+    document.documentElement.style.setProperty('--neon-secondary', '#00ffcc');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '0, 255, 204');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#041008');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#020704');
+  } else if (themeName === 'toxic') {
+    document.documentElement.style.setProperty('--neon-primary', '#10b981');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '16, 185, 129');
+    document.documentElement.style.setProperty('--neon-secondary', '#22c55e');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '34, 197, 94');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#020d06');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#000000');
+  } else if (themeName === 'royal') {
+    document.documentElement.style.setProperty('--neon-primary', '#a855f7');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '168, 85, 247');
+    document.documentElement.style.setProperty('--neon-secondary', '#ec4899');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '236, 72, 153');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#0f021f');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#04000a');
+  } else if (themeName === 'crimson') {
+    document.documentElement.style.setProperty('--neon-primary', '#f43f5e');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '244, 63, 94');
+    document.documentElement.style.setProperty('--neon-secondary', '#f97316');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '249, 115, 22');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#1a0307');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#000000');
+  } else if (themeName === 'deepsea') {
+    document.documentElement.style.setProperty('--neon-primary', '#06b6d4');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '6, 182, 212');
+    document.documentElement.style.setProperty('--neon-secondary', '#3b82f6');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '59, 130, 246');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#010c14');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#000000');
+  } else if (themeName === 'elite') {
+    document.documentElement.style.setProperty('--neon-primary', '#f5f5f5');
+    document.documentElement.style.setProperty('--neon-primary-rgb', '245, 245, 245');
+    document.documentElement.style.setProperty('--neon-secondary', '#a3a3a3');
+    document.documentElement.style.setProperty('--neon-secondary-rgb', '163, 163, 163');
+    document.documentElement.style.setProperty('--bg-gradient-start', '#0a0a0a');
+    document.documentElement.style.setProperty('--bg-gradient-end', '#020202');
+  }
+
+  persistState();
+}
+
+function changeRgbSpeed(speed) {
+  systemState.rgbSpeed = `${speed}s`;
+  document.documentElement.style.setProperty('--rgb-speed', `${speed}s`);
+  document.getElementById('rgbSpeedLabel').textContent = `${speed}s`;
+  persistState();
+}
+
+// 2. Manage Tools
+function toggleAuthFields(authType) {
+  soundClick();
+  document.getElementById('authKeyContainer').classList.add('hidden');
+  document.getElementById('authUserPassContainer').classList.add('hidden');
+
+  if (authType === 'key') {
+    document.getElementById('authKeyContainer').classList.remove('hidden');
+  } else if (authType === 'user-pass') {
+    document.getElementById('authUserPassContainer').classList.remove('hidden');
+  }
+}
+
+function handleToolSubmit(e) {
+  e.preventDefault();
+  soundSuccess();
+
+  const folderId = document.getElementById('toolFolderSelect').value;
+  const name = document.getElementById('toolNameInput').value;
+  const authType = document.getElementById('toolAuthSelect').value;
+  const downloadUrl = document.getElementById('toolUrlInput').value;
+  
+  const newTool = {
+    id: `tool_${Date.now()}`,
+    folderId,
+    name,
+    authType,
+    downloadUrl
+  };
+
+  if (authType === 'key') {
+    newTool.authKey = document.getElementById('toolKeyInput').value || "EXPLOIT-DEMO-KEY";
+  } else if (authType === 'user-pass') {
+    newTool.authUser = document.getElementById('toolUsernameInput').value || "admin";
+    newTool.authPass = document.getElementById('toolPasswordInput').value || "pass";
+  }
+
+  systemState.tools.push(newTool);
+  persistState();
+
+  document.getElementById('addToolForm').reset();
+  toggleAuthFields('none');
+}
+
+function deleteTool(toolId) {
+  soundError();
+  systemState.tools = systemState.tools.filter(t => t.id !== toolId);
+  persistState();
+}
+
+// 3. Create Folder Directories
+function handleFolderSubmit(e) {
+  e.preventDefault();
+  soundSuccess();
+
+  const id = document.getElementById('newFolderId').value.trim().toLowerCase().replace(/\s+/g, '_');
+  const name = document.getElementById('newFolderName').value;
+  const desc = document.getElementById('newFolderDesc').value;
+  const password = document.getElementById('newFolderPass').value;
+
+  if (systemState.folders.find(f => f.id === id)) {
+    alert("Folder ID already exists!");
+    return;
+  }
+
+  const newFolder = { id, name, desc, password };
+  systemState.folders.push(newFolder);
+  
+  const select = document.getElementById('toolFolderSelect');
+  const opt = document.createElement('option');
+  opt.value = id;
+  opt.textContent = name;
+  select.appendChild(opt);
+
+  persistState();
+  document.getElementById('createFolderForm').reset();
+}
+
+function deleteFolder(folderId) {
+  soundError();
+  systemState.folders = systemState.folders.filter(f => f.id !== folderId);
+  systemState.tools = systemState.tools.filter(t => t.folderId !== folderId);
+  persistState();
+}
+
+// 4. Password Alterations
+function saveNewMainPassword() {
+  const input = document.getElementById('changeMainPasswordInput').value;
+  if (input) {
+    soundSuccess();
+    systemState.mainUnlockPassword = input;
+    persistState();
+    alert("Main access password altered correctly.");
+    document.getElementById('changeMainPasswordInput').value = '';
+  }
+}
+
+// Factory Override Reset
+function resetFactorySettings() {
+  if (confirm("Reset layout system, custom themes and tools back to original state?")) {
+    soundSuccess();
+    localStorage.removeItem('ABHI_GOLDEN_SYSTEM_DATA');
+    systemState = JSON.parse(JSON.stringify(factoryDefaults));
+    persistState();
+    setThemePreset('cyberpunk');
+    changeRgbSpeed(8);
+    location.reload();
+  }
+}
+
+
+// --- LIVE PARALLAX PARTICLE BACKGROUND ENGINE ---
+let canvasBg = document.getElementById('matrixCanvas');
+let ctxBg = canvasBg.getContext('2d');
+let bgAnimId = null;
+let currentBgEffect = 'matrix';
+
+function resizeBg() {
+  canvasBg.width = window.innerWidth;
+  canvasBg.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+function changeCanvasEffect(effectName) {
+  soundClick();
+  systemState.particleEffect = effectName;
+  persistState();
+  initParticleEngine(effectName);
+}
+
+function initParticleEngine(effectName) {
+  currentBgEffect = effectName;
+  if (bgAnimId) cancelAnimationFrame(bgAnimId);
+  
+  if (effectName === 'matrix') {
+    initMatrixRain();
+  } else if (effectName === 'starfield') {
+    initStarfield();
+  } else {
+    initNebulaOrbs();
+  }
+}
+
+function initMatrixRain() {
+  const cols = Math.floor(canvasBg.width / 20) + 1;
+  const ypos = Array(cols).fill(0);
+
+  function matrixTick() {
+    ctxBg.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
+
+    ctxBg.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-primary') || '#f0c040';
+    ctxBg.font = '12px monospace';
+
+    ypos.forEach((y, idx) => {
+      const text = String.fromCharCode(Math.random() * 128);
+      const x = idx * 20;
+      ctxBg.fillText(text, x, y);
+
+      if (y > 100 + Math.random() * 10000) {
+        ypos[idx] = 0;
+      } else {
+        ypos[idx] = y + 20;
+      }
+    });
+
+    bgAnimId = requestAnimationFrame(matrixTick);
+  }
+  matrixTick();
+}
+
+function initStarfield() {
+  const stars = Array(200).fill().map(() => ({
+    x: Math.random() * canvasBg.width - canvasBg.width / 2,
+    y: Math.random() * canvasBg.height - canvasBg.height / 2,
+    z: Math.random() * canvasBg.width
+  }));
+
+  function starfieldTick() {
+    ctxBg.fillStyle = 'rgba(3, 8, 5, 0.2)';
+    ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
+
+    const cx = canvasBg.width / 2;
+    const cy = canvasBg.height / 2;
+
+    stars.forEach(s => {
+      s.z -= 4;
+      if (s.z <= 0) {
+        s.z = canvasBg.width;
+        s.x = Math.random() * canvasBg.width - canvasBg.width / 2;
+        s.y = Math.random() * canvasBg.height - canvasBg.height / 2;
+      }
+
+      const px = s.x / (s.z / canvasBg.width) + cx;
+      const py = s.y / (s.z / canvasBg.width) + cy;
+
+      if (px >= 0 && px < canvasBg.width && py >= 0 && py < canvasBg.height) {
+        const d = (1 - s.z / canvasBg.width);
+        ctxBg.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-primary') || '#f0c040';
+        ctxBg.fillRect(px, py, d * 3, d * 3);
+      }
+    });
+
+    bgAnimId = requestAnimationFrame(starfieldTick);
+  }
+  starfieldTick();
+}
+
+function initNebulaOrbs() {
+  const orbs = Array(45).fill().map(() => ({
+    x: Math.random() * canvasBg.width,
+    y: Math.random() * canvasBg.height,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5,
+    r: Math.random() * 6 + 2
+  }));
+
+  function nebulaTick() {
+    ctxBg.fillStyle = 'rgba(3, 8, 5, 0.15)';
+    ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
+
+    orbs.forEach(o => {
+      o.x += o.vx;
+      o.y += o.vy;
+
+      if (o.x < 0 || o.x > canvasBg.width) o.vx *= -1;
+      if (o.y < 0 || o.y > canvasBg.height) o.vy *= -1;
+
+      ctxBg.beginPath();
+      ctxBg.arc(o.x, o.y, o.r, 0, Math.PI * 2);
+      ctxBg.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--neon-secondary') || '#00ffcc';
+      ctxBg.shadowColor = ctxBg.fillStyle;
+      ctxBg.shadowBlur = 10;
+      ctxBg.fill();
+      ctxBg.shadowBlur = 0;
+    });
+
+    bgAnimId = requestAnimationFrame(nebulaTick);
+  }
+  nebulaTick();
+}
+
+
+// --- RUNTIME BOOT ---
+window.addEventListener('DOMContentLoaded', () => {
+  renderAllDynamicContent();
+  initParticleEngine('matrix');
+});
+</script>
+</body>
+</html>
